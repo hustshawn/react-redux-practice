@@ -10,13 +10,11 @@ class TodoList extends Component {
   }  
 
   render() {
-    // console.log(this.props)
     return (
-      <div>
-        
-      <ul>
-        {this.renderList()}
-      </ul>
+      <div>        
+        <ul>
+          {this.renderList()}
+        </ul>
       </div>
     )
   }

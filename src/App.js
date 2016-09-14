@@ -5,17 +5,15 @@ import './App.css';
 import { addTodo } from './actions'
 import TodoList from './component/TodoList'
 import AddTodo from './component/AddTodo'
+
 class App extends Component {
 
-
-
   render() {
-    // console.log(this)
-    const { todos, dispatch } = this.props
+    console.log(this.props)
+    const { todos, onAddClick } = this.props
     return (
-      <div className="App">
-        <AddTodo onAddTodo={text => dispatch(addTodo(text))}/>
- 
+      <div >
+        <AddTodo onAddClick={ onAddClick }/>
         <TodoList todos={todos} />
       </div>
     );
@@ -23,11 +21,18 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  // console.log(state)
   return {
     todos: state.todos
   }
 }
-export default connect(mapStateToProps)(App);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAddClick: (text) => {
+      dispatch(addTodo(text))
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 

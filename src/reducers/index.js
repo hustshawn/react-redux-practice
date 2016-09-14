@@ -1,7 +1,7 @@
 import { ADD_TODO } from '../actions'
 import { combineReducers } from 'redux'
 
-const initialState = ['1ab', '2cd']
+const initialState = ['1ab', '2cd', 'new']
 
 function todos(state=initialState, action) {
   // console.log("Reducer- action type:", action.type)
