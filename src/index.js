@@ -10,16 +10,15 @@ import './index.css';
 
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
+let currentTodo = 0
 // Reducer
 const todosReducer = (state=[], action) => {
-  console.log(state)
-  console.log(action)
   switch(action.type){
     case ADD_TODO: {
       return (
         [...state,
           {
-            id: action.id,
+            id: currentTodo++,
             text:action.text,
             completed: false
           }
@@ -45,21 +44,25 @@ const todosReducer = (state=[], action) => {
 
 const store = createStore(todosReducer)
 
-let currentTodo = 0
-console.log("store:",store)
-store.dispatch({type:ADD_TODO, id: currentTodo++, text: 'A'})
-store.dispatch({type:ADD_TODO, id: currentTodo++, text: 'B'})
-store.dispatch({type:ADD_TODO, id: currentTodo++, text: 'C'})
-store.dispatch({type:ADD_TODO, id: currentTodo++, text: 'D'})
-store.dispatch({type:ADD_TODO, id: currentTodo++, text: 'E'})
-// store.dispatch({type:ADD_TODO, todo: 'B'})
 
 class App extends React.Component {
+  handleClick() {
+    const node = this.refs.ref
+    store.dispatch({
+      type: ADD_TODO,
+      text: node.value
+    })
+    node.value = ""
+  }
+
   render() {
-    console.log(store.getState())
+    // console.log(this)
     return (
       <div>
-   
+        <div>
+        <input type="text" ref="ref"/>   
+        <button onClick={ () => this.handleClick() }>Add</button>
+        </div>
         <TodoList store={store.getState()}/>
       </div>
     )
@@ -76,6 +79,8 @@ const TodoList = ({ store }) => (
   </ul>
 )
 
+
+// Final render
 const render = () => {
   ReactDOM.render(
     
