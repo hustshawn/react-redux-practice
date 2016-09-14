@@ -1,38 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-// import logo from './logo.svg';
-import './App.css';
-import { addTodo } from './actions'
-import TodoList from './component/TodoList'
-import AddTodo from './component/AddTodo'
+import React from 'react'
 
-class App extends Component {
-
+class App extends React.Component {
   render() {
-    console.log(this.props)
-    const { todos, onAddClick } = this.props
     return (
-      <div >
-        <AddTodo onAddClick={ onAddClick }/>
-        <TodoList todos={todos} />
-      </div>
-    );
+      <h1>Scratch App from here</h1>
+    )
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    todos: state.todos
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onAddClick: (text) => {
-      dispatch(addTodo(text))
-    }
-  }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-
+export default App
