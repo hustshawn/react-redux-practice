@@ -1,11 +1,19 @@
 import React from 'react'
 
+
+
 class App extends React.Component {
   render() {
     return (
-      <h1>Scratch App from here</h1>
+      <TodoList />
     )
   }
 }
 
+const TodoList = () =>(
+  <ul>
+    <li>a</li>
+    <li>b</li>
+  </ul>
+)
 export default App
