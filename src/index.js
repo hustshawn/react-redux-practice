@@ -4,8 +4,6 @@ import { createStore } from 'redux'
 import './index.css';
 
 
-
-
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
 let currentTodo = 0
@@ -48,8 +46,38 @@ const todosReducer = (state=[], action) => {
   }
 }
 
-const store = createStore(todosReducer)
+const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
+const SHOW_ALL = 'SHOW_ALL'
+const SHOW_COMPLETED = 'SHOW_COMPLETED'
+const visibilityFilter = (
+    state = SHOW_ALL,
+    action
+  ) => {
+  switch(action.type) {
+    case SET_VISIBILITY_FILTER:
+      return action.filter
+    default:
+      state
+  }
+}
 
+// Combined reducer
+const appReducer = (state={}, action) => {
+  return {
+    todos: todosReducer(
+      state.todos, action),
+    visibilityFilter: visibilityFilter(
+      state.visibilityFilter, action)
+  }
+}
+
+// const store = createStore(todosReducer)
+const store = createStore(appReducer)
+
+store.dispatch({
+  type: SET_VISIBILITY_FILTER,
+  filter: SHOW_COMPLETED
+})
 
 class App extends React.Component {
 
@@ -57,7 +85,7 @@ class App extends React.Component {
     return (
       <div>
         <AddTodo />
-        <TodoList todos={store.getState()} />
+        <TodoList todos={store.getState().todos} />
       </div>
     )
   }
