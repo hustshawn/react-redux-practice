@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import './index.css';
 
 
@@ -57,21 +57,16 @@ const visibilityFilter = (
     case SET_VISIBILITY_FILTER:
       return action.filter
     default:
-      state
+      return state
   }
 }
 
-// Combined reducer
-const appReducer = (state={}, action) => {
-  return {
-    todos: todosReducer(
-      state.todos, action),
-    visibilityFilter: visibilityFilter(
-      state.visibilityFilter, action)
-  }
-}
+// // Combined reducer
+const appReducer = combineReducers({
+  todos: todosReducer,
+  visibilityFilter
+})
 
-// const store = createStore(todosReducer)
 const store = createStore(appReducer)
 
 store.dispatch({
