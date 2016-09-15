@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 // import App from './App';
 import { createStore } from 'redux'
 import './index.css';
-import expect from 'expect'
+// import expect from 'expect'
 // import store from './store'
 // import { Provider } from 'react-redux'
 
@@ -58,50 +58,57 @@ const store = createStore(todosReducer)
 
 
 class App extends React.Component {
-  handleClick() {
-    // console.log(this)
-    store.dispatch({
-      type: ADD_TODO,
-      text: this.input.value
-    })
-    this.input.value = ""
-  }
 
   render() {
-  // console.log(store.getState())
     return (
       <div>
-        <div>
-        <input type="text" ref={ node => {
-          this.input = node
-        }}/>   
-        <button onClick={ () => this.handleClick() }>Add</button>
-        </div>
+        <AddTodo />
         <TodoList todos={store.getState()} />
       </div>
     )
   }
 }
 
-const TodoList = ({ todos, onClickTodo }) => (
-  <ul>
-    {console.log(todos)}
-    {todos.map(todo => 
-        <li key={todo.id} 
-            style={{
-              textDecoration: 
-                todo.completed? 
-                  "line-through": "none"
-                }} 
-            onClick={ () => store.dispatch({
-              type: TOGGLE_TODO,
-              id: todo.id
-            })}>
-            {todo.text}
-          </li>
-        )
+
+class AddTodo extends React.Component {
+  handleClick() {
+  // console.log(this)
+    store.dispatch({
+      type: ADD_TODO,
+      text: this.input.value
+    })
+    this.input.value = ""
   }
   
+  render() {
+    return (
+        <div>
+          <input type="text" ref={ node => {
+            this.input = node
+          }}/>   
+          <button onClick={ () => this.handleClick() }>Add</button>
+        </div>
+    )
+  }
+}
+
+const TodoList = ({ todos }) => (
+  <ul>
+    {todos.map(todo => 
+      <li key={todo.id} 
+        style={{
+          textDecoration: 
+            todo.completed? 
+              "line-through": "none"
+            }} 
+        onClick={ () => store.dispatch({
+          type: TOGGLE_TODO,
+          id: todo.id
+        })}>
+        {todo.text}
+      </li>
+      )
+    } 
   </ul>
 )
 
