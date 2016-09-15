@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 // import App from './App';
 import { createStore } from 'redux'
 import './index.css';
+import expect from 'expect'
 // import store from './store'
 // import { Provider } from 'react-redux'
 
@@ -12,31 +13,40 @@ const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
 let currentTodo = 0
 // Reducer
-const todosReducer = (state=[], action) => {
-  switch(action.type){
-    case ADD_TODO: {
-      return (
-        [...state,
-          {
-            id: currentTodo++,
-            text:action.text,
-            completed: false
-          }
-        ] 
-      )
-    }
-    case TOGGLE_TODO: {
-      return state.map(todo => {
-        if (todo.id !== action.id){
-          return todo
-        } else {
+// todo -reducer , handle the each todo's action
+const todo = (state, action) => {
+  switch(action.type) {
+    case ADD_TODO: 
+      return {
+        id: currentTodo++,
+        text: action.text,
+        completed: false
+      }
+    case TOGGLE_TODO: 
+      if (state.id !== action.id){
+        return state
+      } else {
           return {
-            ...todo,
-            completed: !todo.completed
+            ...state,
+            completed: !state.completed
           }
         }
-      })
-    }
+    default:
+      return state
+  }
+}
+
+const todosReducer = (state=[], action) => {
+  switch(action.type){
+    case ADD_TODO: 
+      return [
+        ...state,
+        todo(undefined, action)
+      ]        
+    case TOGGLE_TODO: 
+      return state.map(t => {
+            todo(t, action)
+        })
     default:
       return state
   }
@@ -47,35 +57,51 @@ const store = createStore(todosReducer)
 
 class App extends React.Component {
   handleClick() {
-    const node = this.refs.ref
+    // console.log(this)
     store.dispatch({
       type: ADD_TODO,
-      text: node.value
+      text: this.input.value
     })
-    node.value = ""
+    this.input.value = ""
   }
 
+
+
   render() {
-    // console.log(this)
+  // console.log(store.getState())
     return (
       <div>
         <div>
-        <input type="text" ref="ref"/>   
+        <input type="text" ref={ node => {
+          this.input = node
+        }}/>   
         <button onClick={ () => this.handleClick() }>Add</button>
         </div>
-        <TodoList store={store.getState()}/>
+        <TodoList todos={store.getState()} />
       </div>
     )
   }
 }
 
-const TodoList = ({ store }) => (
+const TodoList = ({ todos, onClickTodo }) => (
   <ul>
-    { store.map((todo) => {
-      return (
-      <li key={todo.id}>{todo.text}</li>
+    {console.log(todos)}
+    {todos.map(todo => 
+        <li key={todo.id} 
+            style={{
+              textDecoration: 
+                todo.completed? 
+                  "line-through": "none"
+                }} 
+            onClick={ () => store.dispatch({
+              type: TOGGLE_TODO,
+              id: todo.id
+            })}>
+            {todo.text}
+          </li>
         )
-    })}
+  }
+  
   </ul>
 )
 

@@ -18,6 +18,10 @@
   font-size: large;
 }
 
+.toggle-todo {
+  text-decoration: line-through;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
