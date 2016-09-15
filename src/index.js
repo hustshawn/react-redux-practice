@@ -45,7 +45,9 @@ const todosReducer = (state=[], action) => {
       ]        
     case TOGGLE_TODO: 
       return state.map(t => {
-            todo(t, action)
+        if(t.id !== action.id)
+          return t
+        return todo(t, action)
         })
     default:
       return state
@@ -64,8 +66,6 @@ class App extends React.Component {
     })
     this.input.value = ""
   }
-
-
 
   render() {
   // console.log(store.getState())
