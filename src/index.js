@@ -48,39 +48,101 @@ const todosReducer = (state=[], action) => {
 
 const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 const SHOW_ALL = 'SHOW_ALL'
+const SHOW_ACTIVE = 'SHOW_ACTIVE'
 const SHOW_COMPLETED = 'SHOW_COMPLETED'
 const visibilityFilter = (
     state = SHOW_ALL,
     action
   ) => {
   switch(action.type) {
-    case SET_VISIBILITY_FILTER:
+    case SET_VISIBILITY_FILTER:{
+      console.log(action)
       return action.filter
+    }
+      
     default:
       return state
   }
 }
 
+const visibleTodos = (state, action) => {
+  switch(action.type) {
+    case SHOW_COMPLETED:
+      return state.todos.filter(todo => todo.completed)
+    case SHOW_ACTIVE: 
+      return state.todos.filter(todo => !todo.completed)
+    default:
+      return state
+  }
+}
+
+// const combineReducers = (reducers) =>{
+//   return (state ={}, action) => {
+//     return Object.keys(reducers).reduce(
+//       (nextState, key) => {
+//         nextState[key] = reducers[key](
+//           state[key],
+//           action
+//         )
+//         return nextState
+//       }, 
+//       {}
+//     )
+//   }
+// }
 // // Combined reducer
+const FilterLink = ({
+  filter,
+  children
+}) => {
+  return (
+    <a href="#" onClick={e=> {
+      e.preventDefault();
+      store.dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter
+      })
+    }}>
+      { children }
+    </a>
+  )
+}
+
+const getVisibleTodos = (todos, filter) => {
+  // return todos.filter()
+  switch(filter) {
+    case SHOW_COMPLETED:
+      return todos.filter(todo => todo.completed)
+    case SHOW_ACTIVE:
+      return todos.filter(todo => !todo.completed)
+    default:
+      return todos
+  }
+}
+
 const appReducer = combineReducers({
   todos: todosReducer,
+  // visibleTodos: visibleTodos,
   visibilityFilter
 })
 
 const store = createStore(appReducer)
 
-store.dispatch({
-  type: SET_VISIBILITY_FILTER,
-  filter: SHOW_COMPLETED
-})
+// store.dispatch({
+//   type: SET_VISIBILITY_FILTER,
+//   filter: SHOW_COMPLETED
+// })
 
 class App extends React.Component {
 
   render() {
+    const { todos, visibilityFilter } = this.props
+    const visibleTodos = getVisibleTodos(todos, visibilityFilter)
     return (
       <div>
         <AddTodo />
-        <TodoList todos={store.getState().todos} />
+        <TodoList todos={visibleTodos} />
+   
       </div>
     )
   }
@@ -134,7 +196,7 @@ const TodoList = ({ todos }) => (
 const render = () => {
   ReactDOM.render(
     
-      <App />,
+      <App {...store.getState()}/>,
 
     document.getElementById('root')
   );
