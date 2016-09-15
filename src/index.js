@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import App from './App';
 import { createStore } from 'redux'
 import './index.css';
-// import expect from 'expect'
-// import store from './store'
-// import { Provider } from 'react-redux'
+
 
 
 
@@ -44,11 +41,8 @@ const todosReducer = (state=[], action) => {
         todo(undefined, action)
       ]        
     case TOGGLE_TODO: 
-      return state.map(t => {
-        if(t.id !== action.id)
-          return t
-        return todo(t, action)
-        })
+      // This is called 'Reducer Composition'
+      return state.map(t => todo(t, action))
     default:
       return state
   }
@@ -79,7 +73,7 @@ class AddTodo extends React.Component {
     })
     this.input.value = ""
   }
-  
+
   render() {
     return (
         <div>
