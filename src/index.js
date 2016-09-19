@@ -4,6 +4,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
 import './index.css';
 import { Provider, connect } from 'react-redux'
+import { loadState, saveState } from './localStorage'
 
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
@@ -118,9 +119,17 @@ const appReducer = combineReducers({
   visibilityFilter: filterReducer
 })
 
-const middleware = applyMiddleware(logger())
-const store = createStore(appReducer, middleware)
+const persistedState = loadState()
+// const middleware = applyMiddleware(logger())
+// const store = createStore(appReducer, middleware)
+const store = createStore(
+  appReducer,
+  persistedState
+)
 
+store.subscribe( () => {
+  saveState(store.getState())
+})
 /*********************  Components ***********************/
 
 // Presentational component
