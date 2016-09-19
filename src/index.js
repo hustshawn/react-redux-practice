@@ -50,7 +50,8 @@ const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
 const SHOW_ALL = 'SHOW_ALL'
 const SHOW_ACTIVE = 'SHOW_ACTIVE'
 const SHOW_COMPLETED = 'SHOW_COMPLETED'
-const visibilityFilter = (
+
+const filterReducer = (
     state = SHOW_ALL,
     action
   ) => {
@@ -93,8 +94,13 @@ const visibleTodos = (state, action) => {
 // // Combined reducer
 const FilterLink = ({
   filter,
+  currentFilter,
   children
 }) => {
+  if (filter === currentFilter) {
+    return <span>{children}</span>
+  }
+
   return (
     <a href="#" onClick={e=> {
       e.preventDefault();
@@ -123,7 +129,7 @@ const getVisibleTodos = (todos, filter) => {
 const appReducer = combineReducers({
   todos: todosReducer,
   // visibleTodos: visibleTodos,
-  visibilityFilter
+  visibilityFilter: filterReducer
 })
 
 const store = createStore(appReducer)
@@ -142,7 +148,13 @@ class App extends React.Component {
       <div>
         <AddTodo />
         <TodoList todos={visibleTodos} />
-   
+        Show:
+        {' '}
+        <FilterLink filter={SHOW_ALL} currentFilter={visibilityFilter}>All</FilterLink>
+        {' '}
+        <FilterLink filter={SHOW_ACTIVE} currentFilter={visibilityFilter}>Active</FilterLink>
+        {' '}
+        <FilterLink filter={SHOW_COMPLETED} currentFilter={visibilityFilter}>Completed</FilterLink>
       </div>
     )
   }
@@ -170,6 +182,22 @@ class AddTodo extends React.Component {
     )
   }
 }
+
+const Todo = ({
+  todo,
+  onClick,
+  key
+}) => (
+  <li key={todo.id} 
+        style={{
+          textDecoration: 
+            todo.completed? 
+              "line-through": "none"
+            }} 
+        onClick={onClick()}>
+        {todo.text}
+      </li>
+)
 
 const TodoList = ({ todos }) => (
   <ul>
