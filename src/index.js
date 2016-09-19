@@ -122,9 +122,9 @@ const appReducer = combineReducers({
 })
 
 const persistedState = loadState()
-// const middleware = applyMiddleware(logger())
+const createStoreWithMiddleware = applyMiddleware(logger())(createStore)
 // const store = createStore(appReducer, middleware)
-const store = createStore(
+const store = createStoreWithMiddleware(
   appReducer,
   persistedState
 )
