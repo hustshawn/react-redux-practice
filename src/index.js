@@ -114,6 +114,62 @@ const FilterLink = ({
   )
 }
 
+
+class AddTodo extends React.Component {
+  handleClick() {
+  // console.log(this)
+    store.dispatch({
+      type: ADD_TODO,
+      text: this.input.value
+    })
+    this.input.value = ""
+  }
+
+  render() {
+    return (
+        <div>
+          <input type="text" ref={ node => {
+            this.input = node
+          }}/>   
+          <button onClick={ () => this.handleClick() }>Add</button>
+        </div>
+    )
+  }
+}
+
+const Todo = ({
+  onClick,
+  text,
+  completed
+}) => (
+  <li     
+    onClick={onClick}
+    style={{
+      textDecoration: 
+        completed? 
+          "line-through":
+          "none"
+        }} 
+  >
+    {text}
+  </li>
+)
+
+const TodoList = ({
+  todos, 
+  onTodoClick 
+}) => (
+  <ul>
+    {todos.map(todo =>
+      <Todo 
+        key={todo.id} 
+        {...todo} 
+        onClick={() => onTodoClick(todo.id)} 
+        />
+    )}
+  </ul>
+)
+
 const getVisibleTodos = (todos, filter) => {
   // return todos.filter()
   switch(filter) {
@@ -147,7 +203,13 @@ class App extends React.Component {
     return (
       <div>
         <AddTodo />
-        <TodoList todos={visibleTodos} />
+        <TodoList 
+          todos={visibleTodos} 
+          onTodoClick={ id => store.dispatch({
+            type: TOGGLE_TODO,
+            id
+          })
+        } />
         Show:
         {' '}
         <FilterLink filter={SHOW_ALL} currentFilter={visibilityFilter}>All</FilterLink>
@@ -161,63 +223,7 @@ class App extends React.Component {
 }
 
 
-class AddTodo extends React.Component {
-  handleClick() {
-  // console.log(this)
-    store.dispatch({
-      type: ADD_TODO,
-      text: this.input.value
-    })
-    this.input.value = ""
-  }
 
-  render() {
-    return (
-        <div>
-          <input type="text" ref={ node => {
-            this.input = node
-          }}/>   
-          <button onClick={ () => this.handleClick() }>Add</button>
-        </div>
-    )
-  }
-}
-
-const Todo = ({
-  todo,
-  onClick,
-  key
-}) => (
-  <li key={todo.id} 
-        style={{
-          textDecoration: 
-            todo.completed? 
-              "line-through": "none"
-            }} 
-        onClick={onClick()}>
-        {todo.text}
-      </li>
-)
-
-const TodoList = ({ todos }) => (
-  <ul>
-    {todos.map(todo => 
-      <li key={todo.id} 
-        style={{
-          textDecoration: 
-            todo.completed? 
-              "line-through": "none"
-            }} 
-        onClick={ () => store.dispatch({
-          type: TOGGLE_TODO,
-          id: todo.id
-        })}>
-        {todo.text}
-      </li>
-      )
-    } 
-  </ul>
-)
 
 
 // Final render
