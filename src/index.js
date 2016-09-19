@@ -58,7 +58,7 @@ const filterReducer = (
   ) => {
   switch(action.type) {
     case SET_VISIBILITY_FILTER:{
-      console.log(action)
+      // console.log(action)
       return action.filter
     }
       
@@ -106,36 +106,30 @@ const Link = ({
   )
 }
 
-// Container ? provides data and behavior
-class FilterLink extends React.Component {
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => 
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
-  render() {
-    const state = store.getState()
-    const { filter, children } = this.props
-    return (
-      <Link active={ filter === state.visibilityFilter } onClick={
-        e=> {
-          e.preventDefault();
-          store.dispatch({
-            type: 'SET_VISIBILITY_FILTER',
-            filter
-          })
-        }
-      }>
-        { children }
-      </Link>
-    )
+const mapStateToLinkProps = (
+  state,
+  ownProps
+) => {
+  return {
+    active: ownProps.filter === state.visibilityFilter
   }
 }
+const mapDispatchToLinkProps = (
+  dispatch,
+  ownProps
+) => {
+  return {
+    onClick: () => {
+      dispatch({
+        type: 'SET_VISIBILITY_FILTER',
+        filter: ownProps.filter
+      })
+    }
+  }
+}
+
+const FilterLink = connect(mapStateToLinkProps, mapDispatchToLinkProps)(Link)
+
 
 // Footer - presentational component 
 const Footer = () => (
