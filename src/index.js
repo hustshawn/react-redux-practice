@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
 import './index.css';
-import { Provider } from 'react-redux'
+import { Provider, connect } from 'react-redux'
 
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
@@ -67,17 +67,6 @@ const filterReducer = (
   }
 }
 
-const visibleTodos = (state, action) => {
-  switch(action.type) {
-    case SHOW_COMPLETED:
-      return state.todos.filter(todo => todo.completed)
-    case SHOW_ACTIVE: 
-      return state.todos.filter(todo => !todo.completed)
-    default:
-      return state
-  }
-}
-
 // const combineReducers = (reducers) =>{
 //   return (state ={}, action) => {
 //     return Object.keys(reducers).reduce(
@@ -94,7 +83,6 @@ const visibleTodos = (state, action) => {
 // }
 const appReducer = combineReducers({
   todos: todosReducer,
-  // visibleTodos: visibleTodos,
   visibilityFilter: filterReducer
 })
 
@@ -162,30 +150,28 @@ const Footer = () => (
   </p>
 )
 
-class AddTodo extends React.Component {
-  handleClick() {
-  // console.log(this)
-    store.dispatch({
-      type: ADD_TODO,
-      text: this.input.value
-    })
-    this.input.value = ""
-  }
-
-  render() {
-    return (
-        <div>
-          <input type="text" ref={ node => {
-            this.input = node
-          }}/>   
-          <button onClick={ () => this.handleClick() }>Add</button>
-        </div>
-    )
-  }
+let AddTodo = ({
+  dispatch
+}) => {
+  let input 
+  return (
+      <div>
+        <input type="text" ref={ node => {
+          input = node
+        }}/>   
+        <button onClick={ () => {
+          dispatch({
+            type: ADD_TODO,
+            text: input.value
+          })
+          input.value = "" 
+        }}>Add</button>
+      </div>
+  )
 }
 
+AddTodo = connect()(AddTodo)
 
-// TodoList components
 const Todo = ({
   onClick,
   text,
@@ -204,7 +190,7 @@ const Todo = ({
   </li>
 )
 
-const TodoList = ({
+let TodoList = ({
   todos, 
   onTodoClick 
 }) => (
@@ -218,7 +204,6 @@ const TodoList = ({
     )}
   </ul>
 )
-
 const getVisibleTodos = (todos, filter) => {
   // return todos.filter()
   switch(filter) {
@@ -231,35 +216,28 @@ const getVisibleTodos = (todos, filter) => {
   }
 }
 
-class VisibleTodoList extends React.Component {
-
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(() => 
-      this.forceUpdate()
-    )
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
-  render() {
-    const { todos, visibilityFilter } = store.getState()
-    const visibleTodos = getVisibleTodos(todos, visibilityFilter)
-    return (
-      <TodoList todos={visibleTodos} onTodoClick={ id => store.dispatch({
-        type: TOGGLE_TODO,
-        id
-      })}/>
-    )
+const mapStateToTodoListProps = (state) => {
+  return {
+    todos: getVisibleTodos(state.todos, state.visibilityFilter)
   }
 }
+const mapDispatchToTodoListProps = (dispatch) => {
+  return {
+    onTodoClick: (id) => {
+      dispatch({
+        type: TOGGLE_TODO,
+        id
+      })
+    }
+  }
+}
+TodoList = connect(mapStateToTodoListProps, mapDispatchToTodoListProps)(TodoList)
 
 
 const App = () => (
   <div>
     <AddTodo />
-    <VisibleTodoList />
+    <TodoList />
     <Footer />
   </div>
 )
