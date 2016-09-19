@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import './index.css';
+import logger from 'redux-logger'
 
 
 const ADD_TODO = "ADD_TODO"
@@ -170,6 +171,21 @@ const TodoList = ({
   </ul>
 )
 
+const Footer = ({
+  visibilityFilter
+}) => (
+  <p>
+      Show:
+    {' '}
+    <FilterLink filter={SHOW_ALL} currentFilter={visibilityFilter}>All</FilterLink>
+    {' '}
+    <FilterLink filter={SHOW_ACTIVE} currentFilter={visibilityFilter}>Active</FilterLink>
+    {' '}
+    <FilterLink filter={SHOW_COMPLETED} currentFilter={visibilityFilter}>Completed</FilterLink>
+
+  </p>
+)
+
 const getVisibleTodos = (todos, filter) => {
   // return todos.filter()
   switch(filter) {
@@ -188,12 +204,8 @@ const appReducer = combineReducers({
   visibilityFilter: filterReducer
 })
 
-const store = createStore(appReducer)
-
-// store.dispatch({
-//   type: SET_VISIBILITY_FILTER,
-//   filter: SHOW_COMPLETED
-// })
+const middleware = applyMiddleware(logger())
+const store = createStore(appReducer, middleware)
 
 class App extends React.Component {
 
@@ -210,14 +222,8 @@ class App extends React.Component {
             id
           })
         } />
-        Show:
-        {' '}
-        <FilterLink filter={SHOW_ALL} currentFilter={visibilityFilter}>All</FilterLink>
-        {' '}
-        <FilterLink filter={SHOW_ACTIVE} currentFilter={visibilityFilter}>Active</FilterLink>
-        {' '}
-        <FilterLink filter={SHOW_COMPLETED} currentFilter={visibilityFilter}>Completed</FilterLink>
-      </div>
+        <Footer visibilityFilter={visibilityFilter}/>
+       </div>
     )
   }
 }
