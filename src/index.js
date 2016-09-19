@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import './index.css';
 import logger from 'redux-logger'
-
+import './index.css';
+import { Provider } from 'react-redux'
 
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
@@ -268,6 +268,8 @@ const App = () => (
 // Final render
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 );
