@@ -92,29 +92,74 @@ const visibleTodos = (state, action) => {
 //     )
 //   }
 // }
-// // Combined reducer
-const FilterLink = ({
-  filter,
-  currentFilter,
+const appReducer = combineReducers({
+  todos: todosReducer,
+  // visibleTodos: visibleTodos,
+  visibilityFilter: filterReducer
+})
+
+const middleware = applyMiddleware(logger())
+const store = createStore(appReducer, middleware)
+
+// Presentational component
+const Link = ({
+  onClick,
+  active,
   children
 }) => {
-  if (filter === currentFilter) {
+  if (active) {
     return <span>{children}</span>
   }
 
   return (
-    <a href="#" onClick={e=> {
-      e.preventDefault();
-      store.dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter
-      })
-    }}>
+    <a href="#" onClick={onClick}>
       { children }
     </a>
   )
 }
 
+class FilterLink extends React.Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => 
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  render() {
+    const state = store.getState()
+    const { filter, children } = this.props
+    return (
+      <Link active={ filter === state.visibilityFilter } onClick={
+        e=> {
+          e.preventDefault();
+          store.dispatch({
+            type: 'SET_VISIBILITY_FILTER',
+            filter
+          })
+        }
+      }>
+        { children }
+      </Link>
+    )
+  }
+}
+
+// Footer container
+const Footer = () => (
+  <p> 
+   Show:
+    {' '}
+    <FilterLink filter={SHOW_ALL}>All</FilterLink>
+    {' '}
+    <FilterLink filter={SHOW_ACTIVE}>Active</FilterLink>
+    {' '}
+    <FilterLink filter={SHOW_COMPLETED}>Completed</FilterLink>
+  </p>
+)
 
 class AddTodo extends React.Component {
   handleClick() {
@@ -166,24 +211,9 @@ const TodoList = ({
         key={todo.id} 
         {...todo} 
         onClick={() => onTodoClick(todo.id)} 
-        />
+      />
     )}
   </ul>
-)
-
-const Footer = ({
-  visibilityFilter
-}) => (
-  <p>
-      Show:
-    {' '}
-    <FilterLink filter={SHOW_ALL} currentFilter={visibilityFilter}>All</FilterLink>
-    {' '}
-    <FilterLink filter={SHOW_ACTIVE} currentFilter={visibilityFilter}>Active</FilterLink>
-    {' '}
-    <FilterLink filter={SHOW_COMPLETED} currentFilter={visibilityFilter}>Completed</FilterLink>
-
-  </p>
 )
 
 const getVisibleTodos = (todos, filter) => {
@@ -198,14 +228,6 @@ const getVisibleTodos = (todos, filter) => {
   }
 }
 
-const appReducer = combineReducers({
-  todos: todosReducer,
-  // visibleTodos: visibleTodos,
-  visibilityFilter: filterReducer
-})
-
-const middleware = applyMiddleware(logger())
-const store = createStore(appReducer, middleware)
 
 class App extends React.Component {
 
@@ -222,7 +244,7 @@ class App extends React.Component {
             id
           })
         } />
-        <Footer visibilityFilter={visibilityFilter}/>
+        <Footer />
        </div>
     )
   }
