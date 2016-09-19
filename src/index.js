@@ -118,6 +118,7 @@ const Link = ({
   )
 }
 
+// Container ? provides data and behavior
 class FilterLink extends React.Component {
   componentDidMount() {
     this.unsubscribe = store.subscribe(() => 
@@ -148,7 +149,7 @@ class FilterLink extends React.Component {
   }
 }
 
-// Footer container
+// Footer - presentational component 
 const Footer = () => (
   <p> 
    Show:
@@ -183,6 +184,8 @@ class AddTodo extends React.Component {
   }
 }
 
+
+// TodoList components
 const Todo = ({
   onClick,
   text,
@@ -228,40 +231,43 @@ const getVisibleTodos = (todos, filter) => {
   }
 }
 
+class VisibleTodoList extends React.Component {
 
-class App extends React.Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => 
+      this.forceUpdate()
+    )
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
 
   render() {
-    const { todos, visibilityFilter } = this.props
+    const { todos, visibilityFilter } = store.getState()
     const visibleTodos = getVisibleTodos(todos, visibilityFilter)
     return (
-      <div>
-        <AddTodo />
-        <TodoList 
-          todos={visibleTodos} 
-          onTodoClick={ id => store.dispatch({
-            type: TOGGLE_TODO,
-            id
-          })
-        } />
-        <Footer />
-       </div>
+      <TodoList todos={visibleTodos} onTodoClick={ id => store.dispatch({
+        type: TOGGLE_TODO,
+        id
+      })}/>
     )
   }
 }
 
 
-
+const App = () => (
+  <div>
+    <AddTodo />
+    <VisibleTodoList />
+    <Footer />
+  </div>
+)
 
 
 // Final render
-const render = () => {
-  ReactDOM.render(
-    
-      <App {...store.getState()}/>,
 
-    document.getElementById('root')
-  );
-}
-store.subscribe(render)
-render()
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
