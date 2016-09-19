@@ -5,6 +5,8 @@ import logger from 'redux-logger'
 import './index.css';
 import { Provider, connect } from 'react-redux'
 import { loadState, saveState } from './localStorage'
+import { v4 } from 'node-uuid'
+import throttle from 'lodash/throttle'
 
 const ADD_TODO = "ADD_TODO"
 const TOGGLE_TODO = "TOGGLE_TODO"
@@ -20,7 +22,7 @@ let currentTodo = 0
 const addTodo = (text) => {
   return {
     type: ADD_TODO,
-    id: currentTodo++,
+    id: v4(),
     text
   }
 }
@@ -127,9 +129,11 @@ const store = createStore(
   persistedState
 )
 
-store.subscribe( () => {
-  saveState(store.getState())
-})
+store.subscribe(throttle(() => {
+  saveState({
+    todos: store.getState().todos
+  })
+}, 1000))
 /*********************  Components ***********************/
 
 // Presentational component
