@@ -54,23 +54,24 @@ export const filterReducer = (
   }
 }
 
-
-const comapnyReducer =(state={
-  isLoading: false,
+let compInitialState = {
   companies: [],
-  err: []
-}, action) => {
+  isLoading: false,
+  err: null
+}
+
+export const comapnyReducer =(state=compInitialState, action) => {
   switch (action.type) {
-    case 'FETCHING_COMPANY':
+    case 'COMPANIES_PENDING':
       return {...state, 
-        isLoading: true
+        isLoading: false
       }
-    case 'LOAD_COMPANY_SUCCESS':
+    case 'COMPANIES_FULFILLED':
       return {...state, 
         companies: action.payload,
         isLoading: false
       }
-    case 'LOAD_COMPANY_FAILURE':
+    case 'COMPANIES_REJECTED':
       return {...state, 
         isLoading: false,
         err: action.payload
@@ -83,7 +84,7 @@ const comapnyReducer =(state={
 const appReducer = combineReducers({
   todos: todosReducer,
   visibilityFilter: filterReducer,
-  companies: comapnyReducer
+  companyState: comapnyReducer
 })
 
 export default appReducer
