@@ -8,7 +8,13 @@ import appReducer from './reducers'
 
 const configreStore = () => {
   const persistedState = loadState()
-  const createStoreWithMiddleware = applyMiddleware(promise(), thunk, logger())(createStore)
+  const middleware = [ promise(), thunk]
+
+  if (process.env.NODE_ENV !== 'production') {
+    middleware.push(logger())
+  }
+  
+  const createStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
   const store = createStoreWithMiddleware(
     appReducer,
     persistedState
@@ -23,3 +29,5 @@ const configreStore = () => {
 }
 
 export default configreStore
+
+
