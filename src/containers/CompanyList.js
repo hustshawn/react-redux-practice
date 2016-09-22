@@ -31,7 +31,7 @@ const loadCompanyFailure = (err) => {
 class CompanyList extends React.Component {
   
   loadData() {
-    console.log(this.props)
+    // console.log(this.props)
     const { dispatch } = this.props
 
     dispatch(fetchingCompany())
@@ -43,8 +43,8 @@ class CompanyList extends React.Component {
     //     yourAction()
     //   })
     // })
-    return fetch(`http://rest.learncode.academy/api/wstern/users`).then(
-
+    return fetch(`http://localhost:8000/etadmin/companies/`, {credentials: 'include'}).then(
+    // return fetch(`http://rest.learncode.academy/api/wstern/users`).then(
       response => response.json())
       .then(json => dispatch({ type: 'LOAD_COMPANY_SUCCESS', payload: json}),
       err => dispatch({type: 'LOAD_COMPANY_FAILURE', payload: err})
@@ -53,14 +53,14 @@ class CompanyList extends React.Component {
 
   componentDidMount() {
     console.log('Component Mounted')
-    this.props.companies = this.loadData()
+    this.loadData()
   }
 
   render() {
     console.log(this.props)
-    const { companies } = this.props
-    if ( companies.isLoading) {
-      return <p>Loading...</p>
+    const { companies, isLoading } = this.props
+    if ( isLoading) {
+      return <h1>Loading...</h1>
     }
     return (
       <ul>
@@ -74,5 +74,6 @@ class CompanyList extends React.Component {
 }
 
 export default connect(state => ({
-  companies: state.companies.companies
+  companies: state.companies.companies,
+  isLoading: state.companies.isLoading
 }))(CompanyList)
