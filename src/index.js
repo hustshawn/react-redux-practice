@@ -12,10 +12,8 @@ import App from './components/App'
 
 const store = configreStore()
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={ browserHistory } >
-      <Route path="/(:filter)" component={App} />
-    </Router>
+  <Provider store={ store }>
+    <App />
   </Provider>,
   document.getElementById('root')
 );

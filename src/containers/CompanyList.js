@@ -1,6 +1,8 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
 
+// if in client side , can use jQuery to call API with below
+// import axios from 'axios'
 import { connect } from 'react-redux'
 
 const fetchingCompany = () => ({
@@ -29,14 +31,23 @@ const loadCompanyFailure = (err) => {
 class CompanyList extends React.Component {
   
   loadData() {
-    
+    console.log(this.props)
     const { dispatch } = this.props
 
     dispatch(fetchingCompany())
 
-    return fetch(`http://localhost:8000/etadmin/companies/`).then(
-      response => dispatch(loadCompanySuccess(response)),
-      err => dispatch(loadCompanyFailure(err))
+    // return fetch(`http://localhost:8000/etadmin/companies/`).then(
+    // axios.get("http://rest.learncode.academy/api/wstern/users")
+    // .then((response) => {
+    //   dispatch({
+    //     yourAction()
+    //   })
+    // })
+    return fetch(`http://rest.learncode.academy/api/wstern/users`).then(
+
+      response => response.json())
+      .then(json => dispatch({ type: 'LOAD_COMPANY_SUCCESS', payload: json}),
+      err => dispatch({type: 'LOAD_COMPANY_FAILURE', payload: err})
       )
   }
 

@@ -63,17 +63,17 @@ const comapnyReducer =(state={
   switch (action.type) {
     case 'FETCHING_COMPANY':
       return {...state, 
-        isLoading:true
+        isLoading: true
       }
     case 'LOAD_COMPANY_SUCCESS':
       return {...state, 
-        companies: action.response,
+        companies: action.payload,
         isLoading: false
       }
     case 'LOAD_COMPANY_FAILURE':
       return {...state, 
         isLoading: false,
-        err: err
+        err: action.payload
       }
     default:
       return state
