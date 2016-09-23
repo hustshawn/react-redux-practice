@@ -18,10 +18,18 @@ ReactDOM.render(
   <Provider store={ store }>
     <Router history={ browserHistory }>
       <Route path="/" component={ App } >
-        <IndexRoute component={ TodoList }/>
-        <Route path="companies" component={CompanyList}/>
+        <IndexRoute component={ CompanyList }/>
+        <Route path="todos" component={TodoList}/>
       </Route>
     </Router>
   </Provider>,
   document.getElementById('root')
 );
+
+// Todo: Refactor later as below
+// let routes = <Route path="/" component={App}>
+//   <Route path="/repos" component={Repos}/>
+//   <Route path="/about" component={About}/>
+// </Route>;
+
+// <Router routes={routes} history={browserHistory}/>
