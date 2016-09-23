@@ -1,16 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router'
-import RaisedButton from 'material-ui/RaisedButton';
+import AppBar from 'material-ui/AppBar'
+
+import LinkButton from './LinkButton'
 
 class Nav extends React.Component {
 
   render() {
     return (
-      <ul>
-        <RaisedButton label="Button"/>
-        <li><Link to="companies">Companies</Link></li>
-        <li><Link to="todos">Todos</Link></li>
-      </ul>
+      <AppBar title="My App Bar" iconElementRight={
+        <div>
+          <LinkButton path="companies" label="Company"/>
+          <LinkButton path="todos" label="Todos"/>
+        </div>
+      } />
     )
   }
 }
