@@ -7,13 +7,20 @@ import CompanyList from '../containers/CompanyList'
 
 import '../index.css';
 
-const App = () => (
-  <div>
-    <AddTodo />
-    <TodoList />
-    <Footer />
-    <CompanyList />
-  </div>
-)
+export default class App extends React.Component {
 
-export default App
+  render() {
+    return (
+      <div>
+        {this.props.children}
+      </div>
+    )
+  }
+}
+// const App = () => (
+//   <div>
+//     {this.props.children}
+//   </div>
+// )
+
+// export default App
