@@ -1,5 +1,6 @@
 import React from 'react'
 import fetch from 'isomorphic-fetch'
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 // if in client side , can use jQuery to call API with below
 import { connect } from 'react-redux'
@@ -23,6 +24,27 @@ class CompanyList extends React.Component {
 
   render() {
     const { companies, isLoading } = this.props
+    const style = {
+      container: {
+        position: 'relative',
+      },
+      refresh: {
+        display: '',
+        position: 'relative',
+      },
+    }
+    if (isLoading) {
+      return (
+        <RefreshIndicator
+          size={50}
+          left={10}
+          top={0}
+          status="loading"
+          style={style.refresh}
+
+        />
+      )
+    }
     return (
        <ul>
         { companies.map((comp, id) => 
@@ -30,7 +52,6 @@ class CompanyList extends React.Component {
           )
         }
       </ul>
-
     )
   }
 }

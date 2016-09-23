@@ -17,10 +17,3 @@ export default class App extends React.Component {
     )
   }
 }
-// const App = () => (
-//   <div>
-//     {this.props.children}
-//   </div>
-// )
-
-// export default App

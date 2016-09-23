@@ -6,13 +6,23 @@ import LinkButton from './LinkButton'
 class Nav extends React.Component {
 
   render() {
+    const style ={
+      title: {
+        paddingLeft: 20,
+      }
+    }
     return (
-      <AppBar title="My App Bar" iconElementRight={
-        <div>
-          <LinkButton path="companies" label="Company"/>
-          <LinkButton path="todos" label="Todos"/>
-        </div>
-      } />
+      <AppBar 
+        title="My App Bar"
+        titleStyle={style.title} 
+        iconElementRight={
+          <div>
+            <LinkButton path="companies" label="Company"/>
+            <LinkButton path="todos" label="Todos"/>
+          </div>
+        }
+        showMenuIconButton={false}
+        />
     )
   }
 }
