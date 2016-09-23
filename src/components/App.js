@@ -1,21 +1,19 @@
 import React from 'react'
 
-import AddTodo from '../containers/AddTodo'
-import TodoList from '../containers/TodoList'
-import Footer from '../containers/Footer'
-import CompanyList from '../containers/CompanyList'
 import Nav from './Nav'
-
 import '../index.css';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Nav />
-        {this.props.children}
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <Nav />
+          {this.props.children}
+        </div>
+      </MuiThemeProvider>
     )
   }
 }

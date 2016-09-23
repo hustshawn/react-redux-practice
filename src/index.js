@@ -19,6 +19,7 @@ ReactDOM.render(
     <Router history={ browserHistory }>
       <Route path="/" component={ App } >
         <IndexRoute component={ CompanyList }/>
+        <Route path="companies" component={CompanyList}/>
         <Route path="todos" component={TodoList}/>
       </Route>
     </Router>
