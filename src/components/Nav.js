@@ -11,6 +11,9 @@ class Nav extends React.Component {
         paddingLeft: 20,
       }
     }
+    // return (
+    //   <h1 style={style.title}>Nav</h1>
+    //   )
     return (
       <AppBar 
         title="My App Bar"
