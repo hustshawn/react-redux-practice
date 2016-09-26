@@ -3,9 +3,13 @@ import fetch from 'isomorphic-fetch'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
 import { BootstrapTable }  from 'react-bootstrap-table';
 import { TableHeaderColumn as BsTableHeaderColumn } from 'react-bootstrap-table'
+import Paper from 'material-ui/Paper';
+
+// import FlatButton from 'material-ui/FlatButton';
+
 // import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
+// import TextField from 'material-ui/TextField';
+// import Toggle from 'material-ui/Toggle';
 
 // if in client side , can use jQuery to call API with below
 import { connect } from 'react-redux'
@@ -36,15 +40,6 @@ class CompanyList extends React.Component {
     console.log("cell click")
   }
 
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled,
-    });
-  };
-
-  handleChange = (event) => {
-    this.setState({height: event.target.value});
-  };
   /* Material UI */
 
   loadData() {
@@ -56,7 +51,6 @@ class CompanyList extends React.Component {
     })
 
   }
-
 
   componentDidMount() {
     // console.log(BootstrapTable)
@@ -71,7 +65,10 @@ render() {
     const { companies, isLoading } = this.props
     const styles = {
       container: {
-        paddingTop: 100,
+        // paddingTop: 100,
+        margin: 100,
+        // marginLeft: 100,
+        // marginRight: 100,
         display: 'flex',
         alignContent: 'center',
         justifyContent: 'center',
@@ -102,43 +99,46 @@ render() {
       blurToSave: false,
       afterSaveCell: onAfterSaveCell
     }
+    
+    const options = {
+      afterInsertRow: ()=> { console.log("After insert")},
+      onRowClick: (row) => {console.log("on row click: ", row)},
+      onAddRow: (row) => { console.log("on add row")}
+    }
 
-    function onRowSelect(row, isSelected){
+    const onRowSelect = (row, isSelected) => {
       console.log(row);
       console.log("selected: " + isSelected)
     }
 
-    var selectRowProp = {
+    const selectRowProp = {
       mode: "radio",
-      clickToSelect: true,
+      clickToSelect: false,
       bgColor: "rgb(238, 193, 213)",
       onSelect: onRowSelect
     };
 
     if (isLoading) {
-      return (
-        <h1>  Loading...</h1>
-      )
+
       return (
         <RefreshIndicator
           size={50}
           left={10}
           top={0}
           status="loading"
-          style={style.refresh}
+          style={styles.refresh}
         />
       )
     }
 
     return(
-    
-      <div style={styles.container}>  
-        <BootstrapTable data={companies}  pagination={true} insertRow={true} selectRow={selectRowProp} deleteRow={true} striped={true} hover={true} search={true} searchPlaceholder={"Search ..."} >
-          <BsTableHeaderColumn dataField="id" isKey={true} width="" dataAlign="center" dataSort={true}>ID</BsTableHeaderColumn>
-          <BsTableHeaderColumn dataField="name" dataSort={true} >Name</BsTableHeaderColumn>
-          <BsTableHeaderColumn dataField="code" dataSort={true} >Company Code</BsTableHeaderColumn>
-        </BootstrapTable>
-      </div>
+        <div style={styles.container} >
+          <BootstrapTable data={companies} pagination={true} insertRow={true} options={options} selectRow={selectRowProp} deleteRow={true} striped={true} hover={true} search={true} searchPlaceholder={"Search ..."} >
+            <BsTableHeaderColumn dataField="id" isKey={true} width="100" dataAlign="center" dataSort={true}>ID</BsTableHeaderColumn>
+            <BsTableHeaderColumn dataField="name" dataSort={true} width="200" >Name</BsTableHeaderColumn>
+            <BsTableHeaderColumn dataField="code" dataSort={true} >Company Code</BsTableHeaderColumn>
+          </BootstrapTable>
+        </div>
       )
 }
 
