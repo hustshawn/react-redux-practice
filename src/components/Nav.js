@@ -67,7 +67,7 @@ class Nav extends React.Component {
         />
         <Drawer 
           open={this.state.open} 
-          docked={true} 
+          docked={false} 
           onRequestChange={(open, reason) => {
             this.setState({open:false})
             console.log(reason)
@@ -87,7 +87,6 @@ class Nav extends React.Component {
               value={"todos"}
               primaryText="Todos"
             />
-
           </SelectableList>
         </Drawer>
      </div>
