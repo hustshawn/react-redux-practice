@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar'
 import LinkButton from './LinkButton'
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-
+import { cyan500 } from 'material-ui/styles/colors'
 class Nav extends React.Component {
   constructor(props) {
     super(props);
@@ -20,18 +20,17 @@ class Nav extends React.Component {
   getStyle = () => ({
     title: {
       paddingLeft: 20
-    }
+    },
   })
    
   render() {
-    const { title } = this.getStyle()
-
+    const style = this.getStyle()
+    const title = 'App Bar'
     return (
      <div>
         <AppBar 
         onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
-        title="My App Bar"
-        titleStyle={title}
+        title={title}
         iconElementRight={
           <div>
             <LinkButton path="companies" label="Company"/>
@@ -49,6 +48,7 @@ class Nav extends React.Component {
             console.log(reason)
           }}
         >
+          <AppBar title={title} />
           <MenuItem>Menu Item</MenuItem>
           <MenuItem>Menu Item 2</MenuItem>
         </Drawer>
