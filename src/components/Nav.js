@@ -2,7 +2,6 @@ import React from 'react'
 import AppBar from 'material-ui/AppBar'
 import FlatButton from 'material-ui/FlatButton';
 
-import LinkButton from './LinkButton'
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { cyan500 } from 'material-ui/styles/colors'
@@ -63,12 +62,6 @@ class Nav extends React.Component {
         <AppBar 
         onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
         title={title}
-        iconElementRight={
-          <div>
-            <LinkButton path="companies" label="Company"/>
-            <LinkButton path="todos" label="Todos"/>
-          </div>
-        }
         showMenuIconButton={true}
         zDepth={0}
         />
