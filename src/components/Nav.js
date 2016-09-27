@@ -11,28 +11,27 @@ class Nav extends React.Component {
     this.state = {open: false};
   }
 
-  toggle () {
-    console.log(this.state)
-    this.setState({open: !this.state.open})
+  handleLeftIconButtonTouchTap = () => {
+    this.setState({
+      open: !this.state.open
+    })
   }
-  render() {
-    const style ={
-      title: {
-        paddingLeft: 20,
-      }
+
+  getStyle = () => ({
+    title: {
+      paddingLeft: 20
     }
+  })
+   
+  render() {
+    const { title } = this.getStyle()
 
     return (
-      <AppBar 
+     <div>
+        <AppBar 
+        onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
         title="My App Bar"
-        titleStyle={style.title}
-        // onLeftIconButtonTouchTap={this.toggle}
-        iconElementLeft={
-          <Drawer open={false}>
-            <MenuItem>Menu Item</MenuItem>
-            <MenuItem>Menu Item 2</MenuItem>
-          </Drawer>
-        }
+        titleStyle={title}
         iconElementRight={
           <div>
             <LinkButton path="companies" label="Company"/>
@@ -40,7 +39,21 @@ class Nav extends React.Component {
           </div>
         }
         showMenuIconButton={true}
+        zDepth={0}
         />
+        <Drawer 
+          open={this.state.open} 
+          docked={false} 
+          onRequestChange={(open, reason) => {
+            this.setState({open:false})
+            console.log(reason)
+          }}
+        >
+          <MenuItem>Menu Item</MenuItem>
+          <MenuItem>Menu Item 2</MenuItem>
+        </Drawer>
+     </div>
+
     )
   }
 }
