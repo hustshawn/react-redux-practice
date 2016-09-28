@@ -128,6 +128,12 @@ class App extends React.Component {
     browserHistory.push('/')
   }
 
+  handleChangeMuiTheme = (muiTheme) => {
+    this.setState({
+      muiTheme: muiTheme,
+    });
+  };
+  
   render() {
     const {
       location,
@@ -194,7 +200,16 @@ class App extends React.Component {
           </Drawer>
 
           <div className="HolyGrail-content" style={{margin: 50}} >
-            {this.props.children}
+                    {title !== '' ?
+          <div style={prepareStyles(styles.root)}>
+            <div style={prepareStyles(styles.content)}>
+              {React.cloneElement(children, {
+                onChangeMuiTheme: this.handleChangeMuiTheme,
+              })}
+            </div>
+          </div> :
+          children
+        }
           </div>
         </div>
       </MuiThemeProvider>
