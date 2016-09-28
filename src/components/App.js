@@ -12,6 +12,7 @@ injectTapEventPlugin();
 export default class App extends React.Component {
 
   render() {
+
     return (
       <MuiThemeProvider>
         <div className="HolyGrail">

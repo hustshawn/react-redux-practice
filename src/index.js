@@ -14,24 +14,21 @@ import CompanyList from './containers/CompanyList'
 
 
 const store = configreStore()
+let routes = (
+  <Route path="/" component={ App } >
+    <IndexRoute component={ CompanyList }/>
+    <Route path="companies" component={CompanyList}/>
+    <Route path="todos" component={TodoApp}/>
+  </Route>
+)
 
 ReactDOM.render(
   <Provider store={ store }>
     <Router history={ browserHistory }>
-      <Route path="/" component={ App } >
-        <IndexRoute component={ CompanyList }/>
-        <Route path="companies" component={CompanyList}/>
-        <Route path="todos" component={TodoApp}/>
-      </Route>
+      {routes}
     </Router>
   </Provider>,
   document.getElementById('root')
 );
 
-// Todo: Refactor later as below
-// let routes = <Route path="/" component={App}>
-//   <Route path="/repos" component={Repos}/>
-//   <Route path="/about" component={About}/>
-// </Route>;
 
-// <Router routes={routes} history={browserHistory}/>
