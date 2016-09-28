@@ -1,30 +1,29 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { SHOW_COMPLETED, SHOW_ACTIVE, toggleTodo } from '../actions'
-
+import { List, ListItem } from 'material-ui/List'
 const Todo = ({
   onClick,
   text,
   completed
 }) => (
-  <li     
+  <ListItem     
     onClick={onClick}
+    primaryText={text}
     style={{
       textDecoration: 
         completed? 
           "line-through":
           "none"
         }} 
-  >
-    {text}
-  </li>
+  />
 )
 
 let TodoList = ({
   todos, 
   onTodoClick 
 }) => (
-  <ul>
+  <List>
     {todos.map(todo =>
       <Todo 
         key={todo.id} 
@@ -32,7 +31,7 @@ let TodoList = ({
         onClick={() => onTodoClick(todo.id)} 
       />
     )}
-  </ul>
+  </List>
 )
 const getVisibleTodos = (todos, filter) => {
   // return todos.filter()

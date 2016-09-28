@@ -4,12 +4,8 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import { BootstrapTable }  from 'react-bootstrap-table';
 import { TableHeaderColumn as BsTableHeaderColumn } from 'react-bootstrap-table'
 import Paper from 'material-ui/Paper';
-
-// import FlatButton from 'material-ui/FlatButton';
-
-// import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-// import TextField from 'material-ui/TextField';
-// import Toggle from 'material-ui/Toggle';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import '../App.css'
 
 // if in client side , can use jQuery to call API with below
 import { connect } from 'react-redux'
@@ -65,8 +61,9 @@ render() {
     const { companies, isLoading } = this.props
     const styles = {
       container: {
+        padding: 10,
         // paddingTop: 100,
-        margin: 100,
+        // margin: 100,
         // marginLeft: 100,
         // marginRight: 100,
         display: 'flex',
@@ -132,13 +129,13 @@ render() {
     }
 
     return(
-        <div style={styles.container} >
+        <Card className="Card-Container" >
           <BootstrapTable data={companies} pagination={true} insertRow={true} options={options} selectRow={selectRowProp} deleteRow={true} striped={true} hover={true} search={true} searchPlaceholder={"Search ..."} >
             <BsTableHeaderColumn dataField="id" isKey={true} width="100" dataAlign="center" dataSort={true}>ID</BsTableHeaderColumn>
             <BsTableHeaderColumn dataField="name" dataSort={true} width="200" >Name</BsTableHeaderColumn>
             <BsTableHeaderColumn dataField="code" dataSort={true} >Company Code</BsTableHeaderColumn>
           </BootstrapTable>
-        </div>
+        </Card>
       )
 }
 

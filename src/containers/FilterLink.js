@@ -1,22 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setVisibilityFilter } from '../actions'
+import FlatButton from 'material-ui/FlatButton';
 /*********************  Components ***********************/
 
 // Presentational component
 const Link = ({
   onClick,
   active,
-  children
+  label
 }) => {
   if (active) {
-    return <span>{children}</span>
+    return  <FlatButton
+              primary={true}
+              onTouchTap={onClick}
+              disabled={active}
+              label={label} />
   }
-
   return (
-    <a href="#" onClick={onClick}>
-      { children }
-    </a>
+    <FlatButton
+      primary={true}
+      onTouchTap={onClick}
+      label={label} />
   )
 }
 

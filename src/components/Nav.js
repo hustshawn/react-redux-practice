@@ -32,22 +32,24 @@ class Nav extends React.Component {
       open: false
     })
   }
+
   handleRequestChangeList = (event, value) => {
     browserHistory.push(value)
     this.setState({
       open: false
     })
   }
+
   getStyle = () => ({
     title: {
       paddingLeft: 20
     },
     itemButton: {
       width: '100%',
-    marginLeft: 0,
-    paddingLeft: 16,
-    paddingRight: 16,
-    position: 'relative'
+      marginLeft: 0,
+      paddingLeft: 16,
+      paddingRight: 16,
+      position: 'relative'
       // opacity:0
     }
   })
@@ -56,13 +58,12 @@ class Nav extends React.Component {
   render() {
     const style = this.getStyle()
     const title = 'App Bar'
-    console.log(this)
     return (
      <div>
         <AppBar 
         onLeftIconButtonTouchTap={this.handleLeftIconButtonTouchTap}
-        title={title}
         showMenuIconButton={true}
+        title={title}
         zDepth={0}
         />
         <Drawer 
@@ -70,7 +71,6 @@ class Nav extends React.Component {
           docked={false} 
           onRequestChange={(open, reason) => {
             this.setState({open:false})
-            console.log(reason)
           }}
         >
           <AppBar title={title} />
@@ -85,7 +85,7 @@ class Nav extends React.Component {
             />
             <ListItem
               value={"todos"}
-              primaryText="Todos"
+              primaryText="Todos App"
             />
           </SelectableList>
         </Drawer>

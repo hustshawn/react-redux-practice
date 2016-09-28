@@ -9,6 +9,7 @@ import { IndexRoute } from 'react-router'
 import configreStore from './store'
 import App from './components/App'
 import TodoList from './containers/TodoList'
+import TodoApp from './containers/TodoApp'
 import CompanyList from './containers/CompanyList'
 
 
@@ -20,7 +21,7 @@ ReactDOM.render(
       <Route path="/" component={ App } >
         <IndexRoute component={ CompanyList }/>
         <Route path="companies" component={CompanyList}/>
-        <Route path="todos" component={TodoList}/>
+        <Route path="todos" component={TodoApp}/>
       </Route>
     </Router>
   </Provider>,
