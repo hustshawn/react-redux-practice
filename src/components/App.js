@@ -1,40 +1,26 @@
 import React, {PropTypes} from 'react'
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from 'react-tap-event-plugin'
 import { browserHistory } from 'react-router'
 
 import AppBar from 'material-ui/AppBar'
-import Drawer from 'material-ui/Drawer';
-import {darkWhite, lightWhite, grey900, cyan500} from 'material-ui/styles/colors';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {List, ListItem, MakeSelectable} from 'material-ui/List';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {spacing, typography, zIndex} from 'material-ui/styles';
-import Subheader from 'material-ui/Subheader';
-import withWidth, {MEDIUM, LARGE} from 'material-ui/utils/withWidth';
+import Drawer from 'material-ui/Drawer'
+import {darkWhite, lightWhite, grey900 } from 'material-ui/styles/colors'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import IconButton from 'material-ui/IconButton'
+import {List, ListItem, MakeSelectable} from 'material-ui/List'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import {spacing, zIndex} from 'material-ui/styles'
+import Subheader from 'material-ui/Subheader'
+import withWidth, {MEDIUM, LARGE} from 'material-ui/utils/withWidth'
 
-import '../index.css';
+import ContentFooter from './ContentFooter'
+import '../index.css'
 import '../App.css'
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+injectTapEventPlugin()
 
 let SelectableList = MakeSelectable(List)
-const styles = {
-  logo: {
-    cursor: 'pointer',
-    fontSize: 24,
-    color: typography.textFullWhite,
-    lineHeight: `${spacing.desktopKeylineIncrement}px`,
-    fontWeight: typography.fontWeightLight,
-    backgroundColor: cyan500,
-    paddingLeft: spacing.desktopGutter,
-    marginBottom: 8,
-  },
-  version: {
-    paddingLeft: spacing.desktopGutterLess,
-    fontSize: 16,
-  },
-};
 
 class App extends React.Component {
   static propTypes = {
@@ -119,9 +105,9 @@ class App extends React.Component {
     })
   }
 
-  handleOnRequestChangeNavDrawer = () => {
+  handleOnRequestChangeNavDrawer = (open) => {
     this.setState({
-      navDrawerOpen: false
+      navDrawerOpen: open
     })
   }
   handleDrawTitleTouchTap = () => {
@@ -131,39 +117,37 @@ class App extends React.Component {
   handleChangeMuiTheme = (muiTheme) => {
     this.setState({
       muiTheme: muiTheme,
-    });
-  };
+    })
+  }
   
   render() {
     const {
       location,
       children,
-    } = this.props;
+    } = this.props
     let {
       navDrawerOpen,
-    } = this.state;
+    } = this.state
 
     const {
       prepareStyles,
-    } = this.state.muiTheme;
-    const styles = this.getStyles();
+    } = this.state.muiTheme
+    const styles = this.getStyles()
 
     const title = "App Bar"
     let docked = false
     let showMenuIconButton = true
-    console.log(this.props)
     if (this.props.width === LARGE && title !== '') {
-      docked = true;
-      navDrawerOpen = true;
-      showMenuIconButton = false;
+      docked = true
+      navDrawerOpen = true
+      showMenuIconButton = false
 
       styles.navDrawer = {
         zIndex: styles.appBar.zIndex - 1,
-      };
-      styles.root.paddingLeft = 256;
-      styles.footer.paddingLeft = 256;
+      }
+      styles.root.paddingLeft = 256
+      styles.footer.paddingLeft = 256
     }
-    console.log(navDrawerOpen)
     return (
       <MuiThemeProvider>
         <div className="HolyGrail">
@@ -200,17 +184,47 @@ class App extends React.Component {
           </Drawer>
 
           <div className="HolyGrail-content" style={{margin: 50}} >
-                    {title !== '' ?
-          <div style={prepareStyles(styles.root)}>
-            <div style={prepareStyles(styles.content)}>
-              {React.cloneElement(children, {
-                onChangeMuiTheme: this.handleChangeMuiTheme,
-              })}
-            </div>
-          </div> :
-          children
-        }
+            {title !== '' ?
+              <div style={prepareStyles(styles.root)}>
+                <div style={prepareStyles(styles.content)}>
+                  {React.cloneElement(children, {
+                    onChangeMuiTheme: this.handleChangeMuiTheme,
+                  })}
+                </div>
+              </div> :
+              children
+            }
           </div>
+
+          <ContentFooter
+            style={styles.footer}>
+             <p style={prepareStyles(styles.p)}>
+              {'Code Crafted With Heart By '}
+              <a style={styles.a} href="https://twitter.com/hustshawn">
+                @Shawn&nbsp;Zhang
+              </a>
+              {' Powered By '}
+              <a
+                style={styles.a}
+                href="https://facebook.github.io/react/"
+              >
+              React.js
+              </a> {' & '}
+              <a
+                style={styles.a}
+                href="https://material-ui.com"
+              >
+              Material-UI
+              </a>.
+            </p>
+            <IconButton
+              iconStyle={styles.iconButton}
+              iconClassName="a fa-bitbucket-square"
+              href="https://github.com/hustshawn"
+            />
+
+          </ContentFooter>
+
         </div>
       </MuiThemeProvider>
     )

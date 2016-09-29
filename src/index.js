@@ -8,7 +8,6 @@ import { IndexRoute } from 'react-router'
 
 import configreStore from './store'
 import App from './components/App'
-import TodoList from './containers/TodoList'
 import TodoApp from './containers/TodoApp'
 import CompanyList from './containers/CompanyList'
 
