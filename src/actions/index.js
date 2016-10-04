@@ -8,25 +8,22 @@ export const SHOW_ALL = "SHOW_ALL"
 export const SHOW_ACTIVE = "SHOW_ACTIVE"
 export const SHOW_COMPLETED = "SHOW_COMPLETED"
 
-export const addTodo = (text) => {
-  return {
+export const addTodo = (text) => ({
     type: ADD_TODO,
     id: v4(),
     text
-  }
-}
+  })
 
-export const toggleTodo = (id) => {
-  return {
+
+export const toggleTodo = (id) => ({
     type: TOGGLE_TODO,
     id
-  }
-}
+  })
 
-export const setVisibilityFilter = (filter) => {
-  return {
+
+
+export const setVisibilityFilter = (filter) => ({
     type: SET_VISIBILITY_FILTER,
     filter
   }
-}
-
+)
