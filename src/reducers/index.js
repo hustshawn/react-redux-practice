@@ -1,6 +1,6 @@
 /*********************  Reducers *************************/
 import { combineReducers } from 'redux'
-import { ADD_TODO, TOGGLE_TODO, SET_VISIBILITY_FILTER, SHOW_ALL } from '../actions'
+import { ADD_TODO, TOGGLE_TODO } from '../actions'
 // todo -reducer , handle the each todo's action
 const todo = (state, action) => {
   switch(action.type) {
@@ -39,20 +39,26 @@ export const todosReducer = (state=[], action) => {
   }
 }
 
-// export const filterReducer = (
-//     state = SHOW_ALL,
-//     action
-//   ) => {
-//   switch(action.type) {
-//     case SET_VISIBILITY_FILTER:{
-//       // console.log(action)
-//       return action.filter
-//     }
-      
-//     default:
-//       return state
-//   }
-// }
+// It's called 'Selector' which can be used to select data with existed state
+const getVisibleTodos = (state, filter) => {
+  // return state.filter()
+  // console.log(filter)
+  switch(filter) {
+    case 'completed':
+      return state.filter(todo => todo.completed)
+    case 'active':
+      return state.filter(todo => !todo.completed)
+    case 'all':
+      return state
+    default:
+      throw new Error('Unknown filter')
+  }
+}
+
+export const visibleTodos = (state, filter) => {
+  return getVisibleTodos(state.todos, filter)
+}
+
 
 let compInitialState = {
   companies: [],

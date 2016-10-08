@@ -4,7 +4,7 @@ import { SHOW_COMPLETED, SHOW_ACTIVE, toggleTodo } from '../actions'
 import { List, ListItem } from 'material-ui/List'
 import { withRouter } from 'react-router'
 import Footer from './Footer'
-
+import { visibleTodos } from '../reducers'
 const Todo = ({
   onClick,
   text,
@@ -40,20 +40,7 @@ let TodoList = ({
       
     </div>
   )
-const getVisibleTodos = (todos, filter) => {
-  // return todos.filter()
-  // console.log(filter)
-  switch(filter) {
-    case 'completed':
-      return todos.filter(todo => todo.completed)
-    case 'active':
-      return todos.filter(todo => !todo.completed)
-    case 'all':
-      return todos
-    default:
-      throw new Error('Unknown filter')
-  }
-}
+
 
 // const mapStateToTodoListProps = (state, ownProps) => {
 //   console.log(ownProps)
@@ -65,8 +52,8 @@ const getVisibleTodos = (todos, filter) => {
 // }
 const mapStateToTodoListProps = (state, { params }) => {
   return {
-    todos: getVisibleTodos(
-      state.todos, 
+    todos: visibleTodos(
+      state, 
       params.filter || 'all')
   }
 }
