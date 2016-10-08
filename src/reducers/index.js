@@ -1,55 +1,65 @@
 /*********************  Reducers *************************/
 import { combineReducers } from 'redux'
 import { ADD_TODO, TOGGLE_TODO } from '../actions'
-// todo -reducer , handle the each todo's action
-const todo = (state, action) => {
+import todo from './todo'
+
+// export const todosReducer = (state=[], action) => {
+//   switch(action.type){
+//     case ADD_TODO: 
+//       return [
+//         ...state,
+//         todo(undefined, action)
+//       ]        
+//     case TOGGLE_TODO: 
+//       // This is called 'Reducer Composition'
+//       return state.map(t => todo(t, action))
+//     default:
+//       return state
+//   }
+// }
+
+const byId = (state ={}, action) => {
   switch(action.type) {
-    case ADD_TODO: 
+    case ADD_TODO:
+    case TOGGLE_TODO:
       return {
-        id: action.id,
-        text: action.text,
-        completed: false
+        ...state,
+        [action.id]: todo(state[action.id], action)
       }
-    case TOGGLE_TODO: 
-      if (state.id !== action.id){
-        return state
-      } else {
-          return {
-            ...state,
-            completed: !state.completed
-          }
-        }
     default:
       return state
   }
 }
 
-export const todosReducer = (state=[], action) => {
-  switch(action.type){
-    case ADD_TODO: 
-      return [
-        ...state,
-        todo(undefined, action)
-      ]        
-    case TOGGLE_TODO: 
-      // This is called 'Reducer Composition'
-      return state.map(t => todo(t, action))
+const allIds = (state = [], action) => {
+  switch (action.type) {
+    case ADD_TODO:
+      return [...state, action.id]
     default:
       return state
   }
 }
+
+const getAllTodos = (state) => 
+  state.allIds.map(id => state.byId[id])
+
+const todosReducer = combineReducers({
+  byId: byId,
+  allIds: allIds
+})
 
 // It's called 'Selector' which can be used to select data with existed state
 const getVisibleTodos = (state, filter) => {
   // return state.filter()
   // console.log(filter)
+  const allTodos = getAllTodos(state)
   switch(filter) {
     case 'completed':
-      return state.filter(todo => todo.completed)
+      return allTodos.filter(todo => todo.completed)
     case 'active':
-      return state.filter(todo => !todo.completed)
+      return allTodos.filter(todo => !todo.completed)
     case 'all':
-      return state
+      return allTodos
     default:
       throw new Error('Unknown filter')
   }
