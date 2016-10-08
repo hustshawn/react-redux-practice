@@ -6,11 +6,11 @@ const Footer = () => (
   <p> 
    Show:
     {' '}
-    <FilterLink filter={SHOW_ALL} label="All"/>
+    <FilterLink filter='all' > all</FilterLink>
     {' '}
-    <FilterLink filter={SHOW_ACTIVE} label="Active" />
+    <FilterLink filter='active' >active</FilterLink>
     {' '}
-    <FilterLink filter={SHOW_COMPLETED} label="Completed" />
+    <FilterLink filter='completed'>completed</FilterLink>
   </p>
 )
 

@@ -39,20 +39,20 @@ export const todosReducer = (state=[], action) => {
   }
 }
 
-export const filterReducer = (
-    state = SHOW_ALL,
-    action
-  ) => {
-  switch(action.type) {
-    case SET_VISIBILITY_FILTER:{
-      // console.log(action)
-      return action.filter
-    }
+// export const filterReducer = (
+//     state = SHOW_ALL,
+//     action
+//   ) => {
+//   switch(action.type) {
+//     case SET_VISIBILITY_FILTER:{
+//       // console.log(action)
+//       return action.filter
+//     }
       
-    default:
-      return state
-  }
-}
+//     default:
+//       return state
+//   }
+// }
 
 let compInitialState = {
   companies: [],
@@ -83,7 +83,7 @@ export const comapnyReducer =(state=compInitialState, action) => {
 
 const appReducer = combineReducers({
   todos: todosReducer,
-  visibilityFilter: filterReducer,
+  // visibilityFilter: filterReducer,
   companyState: comapnyReducer
 })
 

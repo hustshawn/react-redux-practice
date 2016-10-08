@@ -2,6 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { SHOW_COMPLETED, SHOW_ACTIVE, toggleTodo } from '../actions'
 import { List, ListItem } from 'material-ui/List'
+import { withRouter } from 'react-router'
+import Footer from './Footer'
+
 const Todo = ({
   onClick,
   text,
@@ -21,35 +24,53 @@ const Todo = ({
 
 let TodoList = ({
   todos, 
-  onTodoClick 
+  onTodoClick, 
+  filter 
 }) => (
-  <List>
-    {todos.map(todo =>
-      <Todo 
-        key={todo.id} 
-        {...todo} 
-        onClick={() => onTodoClick(todo.id)} 
-      />
-    )}
-  </List>
-)
+    <div>
+      <List>
+        {todos.map(todo =>
+          <Todo 
+            key={todo.id} 
+            {...todo} 
+            onClick={() => onTodoClick(todo.id)} 
+          />
+        )}
+      </List>
+      
+    </div>
+  )
 const getVisibleTodos = (todos, filter) => {
   // return todos.filter()
+  // console.log(filter)
   switch(filter) {
-    case SHOW_COMPLETED:
+    case 'completed':
       return todos.filter(todo => todo.completed)
-    case SHOW_ACTIVE:
+    case 'active':
       return todos.filter(todo => !todo.completed)
-    default:
+    case 'all':
       return todos
+    default:
+      throw new Error('Unknown filter')
   }
 }
 
-const mapStateToTodoListProps = (state) => ({
+// const mapStateToTodoListProps = (state, ownProps) => {
+//   console.log(ownProps)
+//   return {
+//     todos: getVisibleTodos(
+//       state.todos, 
+//       ownProps.params.filter || 'all')
+//   }
+// }
+const mapStateToTodoListProps = (state, { params }) => {
+  return {
     todos: getVisibleTodos(
       state.todos, 
-      state.visibilityFilter)
-  })
+      params.filter || 'all')
+  }
+}
+
 
 const mapDispatchToTodoListProps = (dispatch) => ({
     onTodoClick(id) {
@@ -57,6 +78,12 @@ const mapDispatchToTodoListProps = (dispatch) => ({
     }
 })
 
-TodoList = connect(mapStateToTodoListProps, mapDispatchToTodoListProps)(TodoList)
+// the 'withRouter' wrapper is only available to the 3.0 of 'react-router'
+TodoList = withRouter(connect(
+  mapStateToTodoListProps, 
+  // mapDispatchToTodoListProps
+  { onTodoClick: toggleTodo }
+)(TodoList))
+
 export default TodoList
 

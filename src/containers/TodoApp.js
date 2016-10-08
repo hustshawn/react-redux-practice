@@ -13,8 +13,8 @@ const TodoApp = () => (
       <CardActions>
         <AddTodo />
       </CardActions>
-    <TodoList />
-    <Footer />
+      <TodoList />
+      <Footer /> 
   </Card>
 )
 export default TodoApp

@@ -17,9 +17,19 @@ let routes = (
   <Route path="/" component={ App } >
     <IndexRoute component={ CompanyList }/>
     <Route path="companies" component={CompanyList}/>
-    <Route path="todos" component={TodoApp}/>
+    <Route path="todos(/:filter)" component={TodoApp}/>
+
   </Route>
 )
+
+
+// const store = configreStore()
+// let routes = (
+//   <Route path="/" component={ App } >
+//     <IndexRoute component={ TodoApp }/>
+//     <Route path="/(:filter)" component={TodoApp}/>
+//   </Route>
+// )
 
 ReactDOM.render(
   <Provider store={ store }>

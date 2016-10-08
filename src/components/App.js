@@ -177,7 +177,7 @@ class App extends React.Component {
                 primaryText="Companies"
               />
               <ListItem
-                value={"todos"}
+                value={"todos/"}
                 primaryText="Todos App"
               />
             </SelectableList>
