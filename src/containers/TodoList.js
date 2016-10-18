@@ -5,7 +5,6 @@ import { List, ListItem } from 'material-ui/List'
 import { withRouter } from 'react-router'
 import Footer from './Footer'
 import { visibleTodos } from '../reducers'
-import { fetchTodos } from '../api'
 
 
 
@@ -20,10 +19,8 @@ class VisibileTodoList extends React.Component {
   }
 
   fetchData() {
-    const { filter, receiveTodos } = this.props
-    fetchTodos(filter).then(todos => 
-      receiveTodos(todos, filter)
-      )
+    const { filter, fetchTodos } = this.props
+    fetchTodos(filter)
   }
 
   render() {
