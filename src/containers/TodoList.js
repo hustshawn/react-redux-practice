@@ -1,24 +1,37 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { SHOW_COMPLETED, SHOW_ACTIVE, toggleTodo } from '../actions'
+import * as actions from '../actions'
 import { List, ListItem } from 'material-ui/List'
 import { withRouter } from 'react-router'
 import Footer from './Footer'
 import { visibleTodos } from '../reducers'
 import { fetchTodos } from '../api'
 
+
+
 class VisibileTodoList extends React.Component {
   componentDidMount() {
-    fetchTodos(this.props.filter).then(todos => 
-      console.log(this.props.filter, todos))
+    this.fetchData()
   }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.props.filter !== prevProps.filter) 
-      fetchTodos(this.props.filter).then(todos => 
-        console.log(this.props.filter, todos))
+      this.fetchData()
   }
+
+  fetchData() {
+    const { filter, receiveTodos } = this.props
+    fetchTodos(filter).then(todos => 
+      receiveTodos(todos, filter)
+      )
+  }
+
   render() {
-    return <TodoList {...this.props} />
+    const { toggleTodo, ...rest } = this.props
+    return <TodoList 
+              {...this.props}
+              onTodoClick={toggleTodo}
+            />
   }
 }
 const Todo = ({
@@ -77,7 +90,7 @@ const mapDispatchToTodoListProps = (dispatch) => ({
 // the 'withRouter' wrapper is only available to the 3.0 of 'react-router'
 VisibileTodoList = withRouter(connect(
   mapStateToTodoListProps, 
-  { onTodoClick: toggleTodo }
+  actions
 )(VisibileTodoList))
 
 export default VisibileTodoList
