@@ -11,7 +11,6 @@ import App from './components/App'
 import TodoApp from './containers/TodoApp'
 import CompanyList from './containers/CompanyList'
 
-
 const store = configreStore()
 let routes = (
   <Route path="/" component={ App } >

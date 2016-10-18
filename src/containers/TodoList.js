@@ -5,6 +5,17 @@ import { List, ListItem } from 'material-ui/List'
 import { withRouter } from 'react-router'
 import Footer from './Footer'
 import { visibleTodos } from '../reducers'
+import { fetchTodos } from '../api'
+
+class VisibileTodoList extends React.Component {
+  componentDidMount() {
+    fetchTodos(this.props.filter).then(todos => 
+      console.log(this.props.filter, todos))
+  }
+  render() {
+    return <TodoList {...this.props} />
+  }
+}
 const Todo = ({
   onClick,
   text,
@@ -41,20 +52,13 @@ let TodoList = ({
     </div>
   )
 
-
-// const mapStateToTodoListProps = (state, ownProps) => {
-//   console.log(ownProps)
-//   return {
-//     todos: getVisibleTodos(
-//       state.todos, 
-//       ownProps.params.filter || 'all')
-//   }
-// }
 const mapStateToTodoListProps = (state, { params }) => {
+  const filter = params.filter || 'all'
   return {
     todos: visibleTodos(
       state, 
-      params.filter || 'all')
+      filter),
+    filter
   }
 }
 
@@ -66,11 +70,10 @@ const mapDispatchToTodoListProps = (dispatch) => ({
 })
 
 // the 'withRouter' wrapper is only available to the 3.0 of 'react-router'
-TodoList = withRouter(connect(
+VisibileTodoList = withRouter(connect(
   mapStateToTodoListProps, 
-  // mapDispatchToTodoListProps
   { onTodoClick: toggleTodo }
-)(TodoList))
+)(VisibileTodoList))
 
-export default TodoList
+export default VisibileTodoList
 
