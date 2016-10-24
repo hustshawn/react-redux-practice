@@ -14,6 +14,5 @@ const byId = (state = {}, action) => {
 export default byId
 
 export const getTodo = (state, id) => {
-  console.log(state, id)
   return state[id]
 }

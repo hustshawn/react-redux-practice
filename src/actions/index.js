@@ -1,6 +1,7 @@
 /*********************  Actions  *************************/
 import { v4 } from 'node-uuid'
 import * as api from '../api'
+import {getIsFetching} from '../reducers'
 
 
 export const ADD_TODO = "ADD_TODO"
@@ -23,7 +24,11 @@ const receiveTodos = (response, filter) => ({
 
 // The grouped action creator that accepts the filter and call API, 
 // then dispatch the action 
-export const fetchTodos = (filter) => (dispatch) => {
+export const fetchTodos = (filter) => (dispatch, getState) => {
+    if (getIsFetching(getState(), filter)) {
+        return 
+    }
+
     dispatch(requestTodos(filter))
     return api.fetchTodos(filter).then(response =>{
         dispatch(receiveTodos(response, filter))
