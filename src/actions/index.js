@@ -26,7 +26,7 @@ const receiveTodos = (response, filter) => ({
 // then dispatch the action 
 export const fetchTodos = (filter) => (dispatch, getState) => {
     if (getIsFetching(getState(), filter)) {
-        return 
+        return Promise.resolve()
     }
 
     dispatch(requestTodos(filter))
