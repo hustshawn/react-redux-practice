@@ -1,6 +1,6 @@
 {
   "name": "redux-tut",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
@@ -37,5 +37,12 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js"
-  }
+  },
+  "main": "index.js",
+  "repository": {
+    "url": "git@bitbucket.org:hustshawn/react-redux-practice.git",
+    "type": "git"
+  },
+  "author": "hustshawn <hustshawn@gmail.com>",
+  "license": "MIT"
 }
