@@ -1,7 +1,7 @@
 /*********************  Actions  *************************/
 import { v4 } from 'node-uuid'
 import * as api from '../api'
-import {getIsFetching} from '../reducers'
+import { getIsFetching } from '../reducers'
 
 
 export const ADD_TODO = "ADD_TODO"
@@ -17,32 +17,42 @@ const requestTodos = (filter) => ({
 })
 
 const receiveTodos = (response, filter) => ({
-    type: 'RECEIVE_TODOS',
-    response,
-    filter
+  type: 'RECEIVE_TODOS',
+  response,
+  filter
 })
 
+const fetchTodosFailure = (error, filter) => ({
+  type: 'FETCH_TODOS_FAILURE',
+  filter,
+  message: error.message || 'Something went wrong'
+})
 // The grouped action creator that accepts the filter and call API, 
 // then dispatch the action 
 export const fetchTodos = (filter) => (dispatch, getState) => {
-    if (getIsFetching(getState(), filter)) {
-        return Promise.resolve()
-    }
+  if (getIsFetching(getState(), filter)) {
+    return Promise.resolve()
+  }
 
-    dispatch(requestTodos(filter))
-    return api.fetchTodos(filter).then(response =>{
-        dispatch(receiveTodos(response, filter))
+  dispatch(requestTodos(filter))
+  return api.fetchTodos(filter).then(
+    response => {
+      dispatch(
+        receiveTodos(response, filter),
+      )
+    },
+    error => {
+      dispatch(fetchTodosFailure(error, filter))
     })
 }
 
 export const addTodo = (text) => ({
-    type: ADD_TODO,
-    id: v4(),
-    text
+  type: ADD_TODO,
+  id: v4(),
+  text
 })
 
 export const toggleTodo = (id) => ({
-    type: TOGGLE_TODO,
-    id
+  type: TOGGLE_TODO,
+  id
 })
-

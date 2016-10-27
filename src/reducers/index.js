@@ -30,6 +30,9 @@ export const getVisibleTodos = (state, filter) => {
 export const getIsFetching = (state, filter) => 
   fromList.getIsFetching(state.todos.listByFilter[filter])
 
+export const getErrorMessage = (state, filter) => 
+  fromList.getErrorMessage(state.todos.listByFilter[filter])
+
 let compInitialState = {
   companies: [],
   isLoading: false,
