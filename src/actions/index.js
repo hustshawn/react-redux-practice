@@ -23,12 +23,12 @@ const receiveTodos = (response, filter) => ({
 })
 
 const fetchTodosFailure = (error, filter) => ({
-  type: 'FETCH_TODOS_FAILURE',
-  filter,
-  message: error.message || 'Something went wrong'
-})
-// The grouped action creator that accepts the filter and call API, 
-// then dispatch the action 
+    type: 'FETCH_TODOS_FAILURE',
+    filter,
+    message: error.message || 'Something went wrong'
+  })
+  // The grouped action creator that accepts the filter and call API, 
+  // then dispatch the action 
 export const fetchTodos = (filter) => (dispatch, getState) => {
   if (getIsFetching(getState(), filter)) {
     return Promise.resolve()
@@ -37,12 +37,12 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
   dispatch(requestTodos(filter))
   return api.fetchTodos(filter).then(
     response => {
-      console.log('normalized response',
-        normalize(response, schema.arrayOfTodos)
-        )
-      dispatch(
-        receiveTodos(response, filter),
-      )
+
+      dispatch({
+        type: 'FETCH_TODOS_SUCCESS',
+        response: normalize(response, schema.arrayOfTodos),
+        filter
+      })
     },
     error => {
       dispatch(fetchTodosFailure(error, filter))
@@ -52,12 +52,12 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
 
 export const addTodo = (text) => (dispatch) =>
   api.addTodo(text).then(response => {
-    console.log('normalized response',
-      normalize(response, schema.todo)
-      )
+    // console.log('normalized response',
+    //   normalize(response, schema.todo)
+    //   )
     dispatch({
       type: 'ADD_TODO_SUCCESS',
-      response,
+      response: normalize(response, schema.todo)
     })
   })
 
@@ -68,5 +68,3 @@ export const toggleTodo = (id) => (dispatch) =>
       response
     })
   })
-
-
