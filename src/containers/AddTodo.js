@@ -41,7 +41,6 @@ let AddTodo = ({
       onChange={(e) => input=e.target.value}/>
       <button
         onClick={(e)=> {
-          console.log(input)
           dispatch(addTodo(input))
         } }
       >ADD
