@@ -18,7 +18,7 @@ const todosReducer = combineReducers({
 
 // It's called 'Selector' which can be used to select data with existed state
 export const getVisibleTodos = (state, filter) => {
-  const {todos} = state
+  const { todos } = state
   const ids = fromList.getIds(todos.listByFilter[filter])
   return ids.map(id => fromById.getTodo(todos.byId, id))
 }
@@ -27,10 +27,10 @@ export const getVisibleTodos = (state, filter) => {
 //   return getVisibleTodos(state.todos, filter)
 // }
 
-export const getIsFetching = (state, filter) => 
+export const getIsFetching = (state, filter) =>
   fromList.getIsFetching(state.todos.listByFilter[filter])
 
-export const getErrorMessage = (state, filter) => 
+export const getErrorMessage = (state, filter) =>
   fromList.getErrorMessage(state.todos.listByFilter[filter])
 
 let compInitialState = {
@@ -39,19 +39,19 @@ let compInitialState = {
   err: null
 }
 
-export const comapnyReducer = (state=compInitialState, action) => {
+export const comapnyReducer = (state = compInitialState, action) => {
   switch (action.type) {
     case 'COMPANIES_PENDING':
-      return {...state, 
+      return {...state,
         isLoading: false
       }
     case 'COMPANIES_FULFILLED':
-      return {...state, 
+      return {...state,
         companies: action.payload,
         isLoading: false
       }
     case 'COMPANIES_REJECTED':
-      return {...state, 
+      return {...state,
         isLoading: false,
         err: action.payload
       }

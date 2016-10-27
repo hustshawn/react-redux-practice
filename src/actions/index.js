@@ -12,12 +12,12 @@ export const SHOW_ACTIVE = "SHOW_ACTIVE"
 export const SHOW_COMPLETED = "SHOW_COMPLETED"
 
 const requestTodos = (filter) => ({
-  type: 'REQUEST_TODOS',
+  type: 'FETCH_TODOS_REQUEST',
   filter
 })
 
 const receiveTodos = (response, filter) => ({
-  type: 'RECEIVE_TODOS',
+  type: 'FETCH_TODOS_SUCCESS',
   response,
   filter
 })
