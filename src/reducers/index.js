@@ -23,10 +23,6 @@ export const getVisibleTodos = (state, filter) => {
   return ids.map(id => fromById.getTodo(todos.byId, id))
 }
 
-// export const visibleTodos = (state, filter) => {
-//   return getVisibleTodos(state.todos, filter)
-// }
-
 export const getIsFetching = (state, filter) =>
   fromList.getIsFetching(state.todos.listByFilter[filter])
 
