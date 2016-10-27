@@ -45,13 +45,21 @@ export const fetchTodos = (filter) => (dispatch, getState) => {
     })
 }
 
-export const addTodo = (text) => (dispatch)=> 
-  api.addTodo({
-    type: 'ADD_TODO_SUCCESS',
-    text
+
+export const addTodo = (text) => (dispatch) =>
+  api.addTodo(text).then(response => {
+    dispatch({
+      type: 'ADD_TODO_SUCCESS',
+      response,
+    })
   })
 
-export const toggleTodo = (id) => ({
-  type: TOGGLE_TODO,
-  id
-})
+export const toggleTodo = (id) => (dispatch) =>
+  api.toggleTodo(id).then(response => {
+    dispatch({
+      type: 'TOGGLE_TODO',
+      response
+    })
+  })
+
+
